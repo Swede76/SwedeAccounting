@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 from config import config
 
 db = SQLAlchemy()
+jwt = JWTManager()
 
 def create_app(config_name='development'):
     """Application factory"""
@@ -13,6 +15,7 @@ def create_app(config_name='development'):
     # Initialize extensions
     db.init_app(app)
     CORS(app)
+    jwt.init_app(app)
     
     # Register blueprints
     from app.routes import auth_bp, invoice_bp, bookkeeping_bp, reporting_bp
@@ -20,6 +23,15 @@ def create_app(config_name='development'):
     app.register_blueprint(invoice_bp)
     app.register_blueprint(bookkeeping_bp)
     app.register_blueprint(reporting_bp)
+    
+    # Error handlers
+    @app.errorhandler(404)
+    def not_found(error):
+        return {'error': 'Resource not found'}, 404
+    
+    @app.errorhandler(500)
+    def internal_error(error):
+        return {'error': 'Internal server error'}, 500
     
     # Create database tables
     with app.app_context():
