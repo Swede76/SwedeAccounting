@@ -3,12 +3,16 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from config import config
+import os
 
 db = SQLAlchemy()
 jwt = JWTManager()
 
-def create_app(config_name='development'):
+def create_app(config_name=None):
     """Application factory"""
+    if config_name is None:
+        config_name = os.getenv('FLASK_ENV', 'development')
+    
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     
@@ -32,6 +36,11 @@ def create_app(config_name='development'):
     @app.errorhandler(500)
     def internal_error(error):
         return {'error': 'Internal server error'}, 500
+    
+    # Health check endpoint
+    @app.route('/api/health', methods=['GET'])
+    def health_check():
+        return {'status': 'healthy', 'service': 'SwedeAccounting API'}, 200
     
     # Create database tables
     with app.app_context():
