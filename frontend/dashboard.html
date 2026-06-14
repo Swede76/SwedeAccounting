@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwedeAccounting - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <h1>💰 SwedeAccounting</h1>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#invoices">Invoices</a></li>
+                <li><a href="#customers">Customers</a></li>
+                <li><a href="#payroll">Payroll</a></li>
+                <li><a href="#bookkeeping">Bookkeeping</a></li>
+                <li><a href="#reports">Reports</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="section-header">
+                <h2>Dashboard</h2>
+                <div class="time-period">
+                    <select id="dashboardPeriod" onchange="updateDashboard()">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                        <option value="365">Last Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Quick Stats Cards -->
+            <div class="dashboard-grid stats-grid">
+                <div class="stat-card revenue">
+                    <div class="stat-label">Total Revenue</div>
+                    <div class="stat-value" id="totalRevenue">$0.00</div>
+                    <div class="stat-chart mini-chart-revenue"></div>
+                </div>
+                <div class="stat-card expenses">
+                    <div class="stat-label">Total Expenses</div>
+                    <div class="stat-value" id="totalExpenses">$0.00</div>
+                    <div class="stat-chart mini-chart-expenses"></div>
+                </div>
+                <div class="stat-card net-income">
+                    <div class="stat-label">Net Income</div>
+                    <div class="stat-value" id="netIncome">$0.00</div>
+                    <div class="stat-chart mini-chart-net"></div>
+                </div>
+                <div class="stat-card account-balance">
+                    <div class="stat-label">Account Balance</div>
+                    <div class="stat-value" id="accountBalance">$0.00</div>
+                    <div class="stat-chart mini-chart-balance"></div>
+                </div>
+            </div>
+
+            <!-- Additional Metrics -->
+            <div class="dashboard-grid metrics-grid">
+                <div class="metric-card">
+                    <h3>Outstanding Invoices</h3>
+                    <p class="metric-value" id="outstandingInvoices">$0.00</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Pending Bills</h3>
+                    <p class="metric-value" id="pendingBills">$0.00</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Bank Balance</h3>
+                    <p class="metric-value" id="bankBalance">$0.00</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Payroll Costs</h3>
+                    <p class="metric-value" id="payrollCosts">$0.00</p>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Income vs Expenses (Monthly)</h3>
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>Account Balance Distribution</h3>
+                    <canvas id="accountBalanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Bank Accounts Overview</h3>
+                    <canvas id="bankAccountsChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>Financial Summary</h3>
+                    <canvas id="financialSummaryChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="goToSection('invoices')">Create Invoice</button>
+                    <button class="btn btn-secondary" onclick="goToSection('customers')">Add Customer</button>
+                    <button class="btn btn-secondary" onclick="goToSection('payroll')">Process Payroll</button>
+                    <button class="btn btn-secondary" onclick="goToSection('bookkeeping')">Record Transaction</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/chart-config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
